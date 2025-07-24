@@ -5,11 +5,17 @@ from employer.models import Jobs
 from django.core.exceptions import ObjectDoesNotExist
 import datetime
 # Create your views here.
+
+
 def index(request):
     job=Jobs.objects.all()
-    return render(request,"index.html",locals())
+    return render(request,"issue/index.html",locals())
+
+
 def aboutus(request):
-    return render(request,"aboutus.html")
+    return render(request,"issue/aboutus.html")
+
+
 def jobseekerreg(request):
     if request.method=="POST":
         profilepic=request.POST["profilepic"]
@@ -25,8 +31,10 @@ def jobseekerreg(request):
         jobseek.save()
         log=Login(username=emailaddress,password=password,usertype="jobseeker")
         log.save()
-        return render(request,"jobseeker.html",{"msg":"Registration is done"})
-    return render(request,"jobseeker.html")
+        return render(request,"jobapp/jobseeker.html",{"msg":"Registration is done"})
+    return render(request,"jobapp/jobseeker.html")
+
+
 def login(request):
     if request.method=="POST":  
         username=request.POST["username"]
@@ -45,8 +53,10 @@ def login(request):
                     request.session["username"]=username
                     return redirect("employer:employerhome")
         except ObjectDoesNotExist:
-         return render(request,'login.html',{"msg":"Invalid user"}) 
-    return render(request,"login.html")
+         return render(request,'jobapp/login.html',{"msg":"Invalid user"}) 
+    return render(request,"jobapp/login.html")
+
+
 def employerreg(request):
     if request.method=="POST":
         empprofilepic=request.POST["empprofilepic"]
@@ -65,8 +75,10 @@ def employerreg(request):
         empreg.save()
         log=Login(username=cpemailaddress,password=password,usertype="employer")
         log.save()
-        return render(request,"employer.html",{"msg":"Registration is done"})
-    return render(request,"employer.html")
+        return render(request,"jobapp/employer.html",{"msg":"Registration is done"})
+    return render(request,"jobapp/employer.html")
+
+
 def contactus(request):
     if request.method=="POST": 
         name=request.POST["name"] 
@@ -78,12 +90,16 @@ def contactus(request):
         posteddate=datetime.datetime.today()
         enq=Enquiry(name=name,gender=gender,address=address,contactno=contactno, emailaddress=emailaddress, enquirytext=enquirytext, posteddate=posteddate)
         enq.save()
-        return render(request,"contactus.html",{"msg":"Enquiry is saved"})
-    return render(request,"contactus.html")
+        return render(request,"jobapp/contactus.html",{"msg":"Enquiry is saved"})
+    return render(request,"jobapp/contactus.html")
+
+
 def apply(request):
-    return render(request,"apply.html")
+    return render(request,"jobapp/apply.html")
 def services(request):
-    return render(request,"services.html")
+    return render(request,"jobapp/services.html")
+
+
 def blog(request):
         new=News.objects.all()
-        return render(request,"blog.html",locals())
+        return render(request,"jobapp/blog.html",locals())

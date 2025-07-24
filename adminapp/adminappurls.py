@@ -12,6 +12,5 @@ urlpatterns=[
     path('viewcomplaints/',views.viewcomplaints,name='viewcomplaints'),
     path('viewemployers/',views.viewemployers,name='viewemployers'),
     path('viewjobseekers/',views.viewjobseekers,name='viewjobseekers'),
-    path('delenq/<emailaddress>',views.delenq,name="delenq"),
-    
-    ]
+    path('delenq/<emailaddress>',views.delenq,name="delenq"),    
+]

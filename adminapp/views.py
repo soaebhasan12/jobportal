@@ -12,80 +12,98 @@ def adminhome(request):
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             msg="Welcome Admin"
-            return render(request,"adminhome.html",locals())
+            return render(request,"adminapp/adminhome.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+    
+
 def logout(request):
     try:
         del request.session["adminid"]
     except KeyError:
         return redirect("jobapp:login")
     return redirect("jobapp:login")
+
+
 def news(request):
     if request.method=="POST": 
         newstext=request.POST["newstext"]
         newsdate=datetime.datetime.today()
         new=News(newstext=newstext,newsdate=newsdate)
         new.save()
-        return render(request,"news.html",{"msg":"News is added"})
-    return render(request,"news.html")
+        return render(request,"adminapp/news.html",{"msg":"News is added"})
+    return render(request,"adminapp/news.html")
+
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewnews(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             new=News.objects.all()
-            return render(request,"viewnews.html",locals())
+            return render(request,"adminapp/viewnews.html",locals())
     except KeyError:
         return redirect("jobapp:login")
 def delnews(request,newsdate):
     News.objects.get(newsdate=newsdate).delete() 
     return redirect("adminapp:viewnews")
+
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewenquiries(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             enq=Enquiry.objects.all()
-            return render(request,"viewenquiries.html",locals())
+            return render(request,"adminapp/viewenquiries.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+    
+
 def delenq(request,emailaddress):
     Enquiry.objects.get(emailaddress=emailaddress).delete()
     return redirect("adminapp:viewenquiries")
+
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewcomplaints(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             comp=Response.objects.filter(responsetype="complaint")
-            return render(request,"viewcomplaints.html",locals())
+            return render(request,"adminapp/viewcomplaints.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+    
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewfeedback(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             feed=Response.objects.filter(responsetype="feedback")
-            return render(request,"viewfeedback.html",locals())
+            return render(request,"adminapp/viewfeedback.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+    
+
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewemployers(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             emp=Jobs.objects.all()
-            return render(request,"viewemployers.html",locals())
+            return render(request,"adminapp/viewemployers.html",locals())
     except KeyError:
         return redirect("jobapp:login")
+    
+    
 @cache_control(no_cache=True, must_revalidate=True,no_store=True)
 def viewjobseekers(request):
     try:
         if request.session["adminid"]!=None:
             adminid=request.session["adminid"]
             jobseek=JobSeeker.objects.all()
-            return render(request,"viewjobseekers.html",locals())
+            return render(request,"adminapp/viewjobseekers.html",locals())
     except KeyError:
         return redirect("jobapp:login")
